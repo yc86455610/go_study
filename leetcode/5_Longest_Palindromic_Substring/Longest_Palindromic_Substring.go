@@ -12,16 +12,16 @@ func main() {
 }
 
 func preprocessor(s string) []byte {
-	var newByte []byte
-	newByte = append(newByte, '$')
+	var nb []byte
+	nb = append(nb, '$')
 	for i := 0; i < len(s); i++ {
-		newByte = append(newByte, '#')
-		newByte = append(newByte, s[i])
+		nb = append(nb, '#')
+		nb = append(nb, s[i])
 	}
-	newByte = append(newByte, '#')
-	newByte = append(newByte, '@')
+	nb = append(nb, '#')
+	nb = append(nb, '@')
 
-	return newByte
+	return nb
 }
 
 func postprocessing(b []byte) string {
@@ -36,14 +36,11 @@ func postprocessing(b []byte) string {
 }
 
 func longestPalindrome(s string) string {
-	var b []byte
-	b = preprocessor(s)
-
+	var b []byte = preprocessor(s)
 	var p []int = make([]int, len(b))
-	var maxid int = 0
-	var id int = 0
-	var result int = 0
-	var position int = 0
+	var maxid, id, result, position int
+	var r string
+
 	for i := 1; i < len(b)-1; i++ {
 		if maxid > i {
 			p[i] = int(math.Min(float64(p[2*id-i]), float64(maxid-i)))
@@ -62,7 +59,7 @@ func longestPalindrome(s string) string {
 			position = i
 		}
 	}
-	r := postprocessing(b[position-result : position+result+1])
+	r = postprocessing(b[position-result : position+result+1])
 
-	return string(r)
+	return r
 }
