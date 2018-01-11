@@ -36,8 +36,10 @@ func postprocessing(b []byte) string {
 }
 
 func longestPalindrome(s string) string {
-	var b []byte = preprocessor(s)
-	var p []int = make([]int, len(b))
+	var b []byte
+	b = preprocessor(s)
+	var p []int
+	p = make([]int, len(b))
 	var maxid, id, result, position int
 	var r string
 
