@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 )
 
 func reverse(x int) int {
@@ -12,6 +13,9 @@ func reverse(x int) int {
 	for x > 0 {
 		rNum = rNum*10 + x%10
 		x = x / 10
+	}
+	if rNum > math.MaxInt32 {
+		return 0
 	}
 	return rNum
 }
