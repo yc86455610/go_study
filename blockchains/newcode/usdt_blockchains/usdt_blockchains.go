@@ -59,8 +59,7 @@ type vout struct {
 	Address string  `json:"addr"`
 }
 
-// Transaction .
-type Transaction struct {
+type transaction struct {
 	Time int64  `json:"time"`
 	Vout []vout `json:"out"`
 }
@@ -85,22 +84,22 @@ func UsdtBlocksChainCheck(categorization, txid, address string) (result Result, 
 	}
 	// fmt.Println(string(bData[:]))
 
-	var transaction Transaction
-	err = json.Unmarshal(bData, &transaction)
+	var tx transaction
+	err = json.Unmarshal(bData, &tx)
 	if err != nil {
 		fmt.Println("error:", err)
 		return
 	}
 	// fmt.Printf("%+v\n", transaction)
 
-	for j := 0; j < len(transaction.Vout); j++ {
-		if transaction.Vout[j].Address == address {
-			result.value = transaction.Vout[j].Value
+	for j := 0; j < len(tx.Vout); j++ {
+		if tx.Vout[j].Address == address {
+			result.value = tx.Vout[j].Value
 		}
 	}
 	result.res = true
 	result.categorization = categorization
-	result.timestamp = transaction.Time
+	result.timestamp = tx.Time
 	result.address = address
 	result.txid = txid
 	return result, nil

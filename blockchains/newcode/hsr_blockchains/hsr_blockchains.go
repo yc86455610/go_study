@@ -72,8 +72,7 @@ type vout struct {
 	ScriptPubkey script  `json:"scriptPubkey"`
 }
 
-// Transaction .
-type Transaction struct {
+type transaction struct {
 	Time          int64  `json:"time"`
 	Vout          []vout `json:"vout"`
 	Confirmations int64  `json:"confirmations"`
@@ -99,24 +98,24 @@ func HsrBlocksChainCheck(categorization, txid, address string) (result Result, e
 	}
 	// fmt.Println(string(bData[:]))
 
-	var transaction Transaction
-	err = json.Unmarshal(bData, &transaction)
+	var tx transaction
+	err = json.Unmarshal(bData, &tx)
 	if err != nil {
 		fmt.Println("error:", err)
 		return
 	}
 	// fmt.Printf("%+v\n", transaction)
 
-	for j := 0; j < len(transaction.Vout); j++ {
-		if transaction.Vout[j].ScriptPubkey.Addresses[0] == address {
-			result.value = transaction.Vout[j].Value
-			if transaction.Confirmations >= 6 {
+	for j := 0; j < len(tx.Vout); j++ {
+		if tx.Vout[j].ScriptPubkey.Addresses[0] == address {
+			result.value = tx.Vout[j].Value
+			if tx.Confirmations >= 6 {
 				result.res = true
 			}
 		}
 	}
 	result.categorization = categorization
-	result.timestamp = transaction.Time
+	result.timestamp = tx.Time
 	result.address = address
 	result.txid = txid
 	return result, nil
