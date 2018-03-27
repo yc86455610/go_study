@@ -18,14 +18,12 @@ func combinationSum(candidates []int, target int) [][]int {
 func dfs(candidates []int, target int, arr []int, res *[][]int, index int) {
 	for i := index; i < len(candidates); i++ {
 		newTarget := target - candidates[i]
+		arr = append(arr, candidates[i])
 		if newTarget > 0 {
-			arr = append(arr, candidates[i])
 			dfs(candidates, newTarget, arr, res, i)
-			arr = (arr)[:len(arr)-1]
 		} else if newTarget == 0 {
-			arr = append(arr, candidates[i])
 			*res = append(*res, append([]int{}, arr...))
-			arr = (arr)[:len(arr)-1]
 		}
+		arr = (arr)[:len(arr)-1]
 	}
 }
