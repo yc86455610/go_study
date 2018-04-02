@@ -5,50 +5,47 @@ import "fmt"
 func main() {
 	a := "aa"
 	b := "*"
+	fmt.Println(isMatch(a, b))
 	a = "zacabz"
 	b = "*a?b*"
+	fmt.Println(isMatch(a, b))
 	a = "aa"
-	b = "aa"
+	b = "a"
+	fmt.Println(isMatch(a, b))
+	a = "aaabbbaabaaaaababaabaaabbabbbbbbbbaabababbabbbaaaabaa"
+	b = "a*******b"
+	fmt.Println(isMatch(a, b))
+	a = "babbbbaabababaabbababaababaabbaabababbaaababbababaaaaaabbabaaaabababbabbababbbaaaababbbabbbbbbbbbbaabbb"
+	b = "b**bb**a**bba*b**a*bbb**aba***babbb*aa****aabb*bbb***a"
 	fmt.Println(isMatch(a, b))
 }
 
 func isMatch(s string, p string) bool {
-	if len(s) == 0 && len(p) == 0 {
-		return true
-	} else if len(s) != 0 && len(p) == 0 {
-		return false
-	} else if len(s) == 0 && p[0] != '*' {
-		return false
-	}
-	sI := 0
-	pI := 0
-	for sI < len(s) {
-		fmt.Println("------")
-		fmt.Println(s[sI:])
-		fmt.Println(p[pI:])
-		if pI == len(p) {
-			return false
-		}
-		if p[pI] == '?' || s[sI] == p[pI] {
-			sI++
-			pI++
-			continue
-		} else if p[pI] == '*' {
-			fmt.Println(">>>")
-			if isMatch(s[sI+1:], p[pI+1:]) {
-				return true
-			}
-			sI++
-			fmt.Println("<<<")
-		} else if s[sI] != p[pI] {
+	star := -1
+	sStation := -1
+	i, j := 0, 0
+	for i < len(s) {
+		if j < len(p) && (s[i] == p[j] || p[j] == '?') {
+			i++
+			j++
+		} else if j < len(p) && (p[j] == '*') {
+			star = j
+			j++
+			sStation = i
+		} else if star != -1 {
+			j = star + 1
+			sStation++
+			i = sStation
+		} else {
 			return false
 		}
 	}
-	if len(p) != 0 && isMatch(s[sI:], p[pI+1:]) {
-		return true
+	for j < len(p) {
+		if p[j] == '*' {
+			j++
+		} else {
+			return false
+		}
 	}
-	// if len(p)-pI > 1 || p[pI] != '*' {
-	// 	return false
-	// }
-	return false
+	return true
 }
