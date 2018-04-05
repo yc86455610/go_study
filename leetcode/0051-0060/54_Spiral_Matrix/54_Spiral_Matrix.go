@@ -3,7 +3,8 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println()
+	a := [][]int{{2, 3}}
+	fmt.Println(spiralOrder(a))
 }
 
 func spiralOrder(matrix [][]int) []int {
