@@ -1,5 +1,7 @@
 package crawler
 
+// package main
+
 import (
 	"fmt"
 	"log"
@@ -8,8 +10,8 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-// FindHuobi .
-func FindHuobi(url string) (title string, text string) {
+// FindForOkex .
+func FindForOkex(url string) (title, text string) {
 	// Request the HTML page.
 	res, err := http.Get(url)
 	if err != nil {
@@ -25,15 +27,15 @@ func FindHuobi(url string) (title string, text string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	title = doc.Find("h1.gh-header-title").Text()
+	title = doc.Find("#readme").Find("h1").Text()
 	fmt.Println("title: ", title)
-	text, err = doc.Find("#wiki-body").Find(".markdown-body").Eq(0).Html()
+	text, err = doc.Find("#readme").Find("article.markdown-body").Html()
 	fmt.Println("text: ", text)
 
 	return title, text
 }
 
-// CleanDataForHuobi .
-func CleanDataForHuobi(title, text string) (string, string) {
+// CleanDataForOkex .
+func CleanDataForOkex(title, text string) (string, string) {
 	return title, text
 }
