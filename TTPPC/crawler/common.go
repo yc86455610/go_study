@@ -7,13 +7,37 @@ import (
 	"os"
 )
 
+// PathExists 判断文件夹是否存在.
+func PathExists(path string) (bool, error) {
+	_, err := os.Stat(path)
+	if err == nil {
+		return true, nil
+	}
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+	return false, err
+}
+
 // SaveForMd .
 func SaveForMd(title, text string, loc string) (err error) {
+	exist, err := PathExists(loc)
+	if err != nil {
+		log.Fatal("PathExists error:", err)
+		return err
+	}
+	if !exist {
+		err := os.Mkdir(loc, os.ModePerm)
+		if err != nil {
+			log.Fatal("Mkdir error:", err, loc)
+			return err
+		}
+	}
 	name := loc + "/" + title + ".md"
 	fmt.Println("file name: ", name)
 	f, err := os.Create(name) //创建文件
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Create error: ", err)
 		return err
 	}
 	defer f.Close()
