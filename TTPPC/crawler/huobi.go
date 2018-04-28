@@ -40,7 +40,7 @@ func FindForHuobi(url string) (title string, text string, err error) {
 	}
 	defer res.Body.Close()
 	if res.StatusCode != 200 {
-		log.Println("status code error: %d %s", res.StatusCode, res.Status)
+		log.Printf("status code error: %d %s\n", res.StatusCode, res.Status)
 		return
 	}
 
